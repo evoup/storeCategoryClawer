@@ -7,7 +7,7 @@ $countriesJson='["PR","PS","PT","PW","PY","QA","AD","AE","AF","AG","AI","AL","AM
 $countries=json_decode($countriesJson);
 foreach ($countries as $country) {
     $country=strtolower($country);
-    $country="us";
+    $country="jp";
     $storeUrl = "https://itunes.apple.com/{$country}/genre/ios/id36?mt=8";
     $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)';
     $ch = curl_init();
@@ -27,15 +27,17 @@ foreach ($countries as $country) {
                 $dom1 = new Dom;
                 $dom1->loadStr($li, []);
                 // <a href="https://itunes.apple.com/us/genre/ios-games/id6014?mt=8" class="top-level-genre" title="Games - App Store Downloads on iTunes">Games</a>
-                echo ">>>>>>>>".$dom1->find('a')[0]."\n"; // this is parent node li, should find ul bebow it 
+                $a=$dom1->find('a')[0];
+                echo ">>>>>>>>".$a."\n"; // this is parent node li, should find ul bebow it 
                 // a attribute is parent node info
                 foreach($innerUlInfo as $innerUl) {
                     // each li is sub node info
                     foreach ($innerUl->find('li') as $innerLi) {
-                        // <li><a href="https://itunes.apple.com/us/genre/ios-games-action/id7001?mt=8" title="Action - App Store Downloads on iTunes">Action</a></li>
+                        // <a href="https://itunes.apple.com/us/genre/ios-games-action/id7001?mt=8" title="Action - App Store Downloads on iTunes">Action</a>
                         $dom3 = new Dom;
                         $dom3->loadStr($innerLi, []);
-                        echo ">>>>>>>>>>>>".$dom3->find('a')[0]."\n";
+                        $a=$dom3->find('a')[0];
+                        echo ">>>>>>>>>>>>".$a."\n";
                     }
                 }
             } else {
@@ -43,7 +45,10 @@ foreach ($countries as $country) {
                 // <a href="https://itunes.apple.com/us/genre/ios-books/id6018?mt=8" class="top-level-genre" title="Books - App Store Downloads on iTunes">Books</a>
                 $dom2 = new Dom;
                 $dom2->loadStr($li, []);
-                echo ">>>>".$dom2->find('a')[0]."\n"; 
+                $a=$dom2->find('a')[0];
+                echo ">>>>".$a."\n"; 
+                //echo $a->text;
+                //echo $a->href;
             }
         }
     }
