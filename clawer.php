@@ -42,6 +42,8 @@ foreach ($countries as $country) {
                 $text=htmlspecialchars_decode($a->text);
                 $CAT[$country][$cat_id]['name']=$text;
                 $CAT[$country][$cat_id]['parent_id']=null;
+                $bigLev=$cat_id;
+                echo $bigLev;
                 // a attribute is parent node info
                 foreach($innerUlInfo as $innerUl) {
                     // each li is sub node info
@@ -70,8 +72,6 @@ foreach ($countries as $country) {
                 $text=htmlspecialchars_decode($a->text);
                 $CAT[$country][$cat_id]['name']=$text;
                 $CAT[$country][$cat_id]['parent_id']=null;
-                $bigLev=$cat_id;
-                echo $bigLev;
                 //echo $a->text;
                 //echo $a->href;
             }
