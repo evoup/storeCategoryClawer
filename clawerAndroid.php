@@ -270,10 +270,11 @@ curl_setopt_array($ch, array(
     CURLOPT_URL => $storeUrl,
     CURLOPT_USERAGENT => $userAgent ,
     CURLOPT_PROXY => $proxy[0],
-    CURLOPT_PROXYPORT => $proxy[1]
+    CURLOPT_PROXYPORT => $proxy[1],
+    CURLOPT_HTTPHEADER => ['Accept-Language: ja']
 ));
 $resp = curl_exec($ch);
-print_r($resp);
+file_put_contents('/tmp/res1', $resp);
 
 
 
