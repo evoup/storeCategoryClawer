@@ -12,6 +12,8 @@
   | Last-Modified:
   +----------------------------------------------------------------------+
  */
+require "vendor/autoload.php";
+use PHPHtmlParser\Dom;
 
 //language code from http://www.lingoes.net/en/translator/langcode.htm
 $languageCode = array(
@@ -271,13 +273,34 @@ curl_setopt_array($ch, array(
     CURLOPT_USERAGENT => $userAgent ,
     CURLOPT_PROXY => $proxy[0],
     CURLOPT_PROXYPORT => $proxy[1],
-    CURLOPT_HTTPHEADER => ['Accept-Language: ja']
+    CURLOPT_HTTPHEADER => ['Accept-Language: zh']
 ));
 $resp = curl_exec($ch);
-file_put_contents('/tmp/res1', $resp);
+$dom = new Dom;
+$dom->loadStr($resp, []);
+$html = $dom->outerHtml;
+$contentSection = null;
+foreach ($dom->find('div[class=action-bar-dropdown-children-container]') as $div) {
+    $contentSection=$div;
+    break; // just first section
+}
+echo "############\n";
+$dom->loadStr($contentSection, []);
+foreach ($dom->find('div ul li') as $ul) { // will get 3 section,which is finace,game,family 
+    $dom1 = new Dom;
+    $dom1->loadStr($ul, []);
+    foreach($dom1->find('li ul li') as $li) {
+        $dom2 = new Dom;
+        $dom2->loadStr($li, []);
+        foreach ($dom2->find('li a') as $app_detail_link) {
+            echo "[app detail link:".$app_detail_link."]\n";
+        }
+    }
+    echo "---------\n"; // next section 
+} 
+
+//file_put_contents('/tmp/res1', $resp);
 
 
 
-
-?>
 
