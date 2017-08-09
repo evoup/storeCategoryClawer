@@ -14,6 +14,7 @@
  */
 require "vendor/autoload.php";
 use PHPHtmlParser\Dom;
+$RES=null;
 
 //language code from http://www.lingoes.net/en/translator/langcode.htm
 $languageCode = array(
@@ -293,7 +294,15 @@ foreach ($dom->find('div ul li') as $ul) { // will get 3 section,which is finace
         $dom2 = new Dom;
         $dom2->loadStr($li, []);
         foreach ($dom2->find('li a') as $app_detail_link) {
-            echo "[app detail link:".$app_detail_link."]\n";
+            $dom3 = new Dom;
+            $dom3->loadStr($app_detail_link, []);
+            $a=$dom2->find('a')[0];
+            //echo ">>>>".$a."\n"; 
+            preg_match_all("/^.*\/store\/apps\/category\/(.*)$/", $a->href, $matches, PREG_SET_ORDER);
+            if (isset($matches[0][1])) {
+                echo htmlspecialchars_decode($a->text);
+                $cat_id=$matches[0][1]; // android cat_id like GAME_SIMULATION 
+            }
         }
     }
     echo "---------\n"; // next section 
