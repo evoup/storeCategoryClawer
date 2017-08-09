@@ -18,7 +18,7 @@
  *  `ios_app_category_id` varchar(45) COLLATE utf8_bin DEFAULT NULL,
  *  `parent_id` varchar(45) COLLATE utf8_bin DEFAULT NULL,
  *  `ios_app_category_name` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT 'app category engilsh name',
- *  `locale_names` longtext COLLATE utf8_bin COMMENT 'json key value map, if a category has many names of different countries, visit this field to get specify name.',
+ *  `locale_names` longtext COLLATE utf8mb4_bin COMMENT 'json key value map, if a category has many names of different countries, visit this field to get specify name.',
  *  PRIMARY KEY (`id`),
  *  UNIQUE KEY `category_id` (`ios_app_category_id`),
  *  KEY `parenet_id` (`parent_id`),
