@@ -72,6 +72,5 @@ foreach ($countries as $country) {
     }
 
 }
-//mysqli_query($link, "insert into adsapi.ios_app_category(ios_app_category_id, parent_id, ios_app_category_name, locale_names) values('{$cat_id}',null,'{$text}','{}')");
 print_r($CAT);
 file_put_contents("/tmp/res.json", serialize($CAT));

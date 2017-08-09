@@ -14,7 +14,7 @@
  */
 require "vendor/autoload.php";
 use PHPHtmlParser\Dom;
-$RES=null;
+$CAT=null;
 
 //language code from http://www.lingoes.net/en/translator/langcode.htm
 $languageCode = array(
@@ -257,7 +257,6 @@ $languageCode = array(
 	'zh-TW'=>'Chinese (T)',
 	'zu'=>'Zulu',
 	'zu-ZA'=>'Zulu (South Africa)');
-print_r($languageCode);
 
 
 //curl 'https://play.google.com/store/apps' -H 'accept-encoding: gzip, deflate, br' -H 'accept-language: zh-CN,zh;q=0.8' -H 'upgrade-insecure-requests: 1' -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36' -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'cache-control: max-age=0' -H 'authority: play.google.com' -H 'cookie: PLAY_PREFS=CvMGCAAS7gYKAlVTEIaIua3cKxqvBhESExQV1AHVAacCxATjBeUF6AXXBtgG3gbfBpCVgQaRlYEGkpWBBpeVgQa3lYEGuJWBBsCVgQbBlYEGxJWBBtSVgQbZlYEG8pWBBviVgQabloEGnZaBBp6WgQafloEGoJaBBu6XgQaCmIEGhZiBBomYgQaKmIEGi5iBBr6YgQarm4EGrZuBBsmbgQbKm4EGy5uBBtWbgQbwm4EGvJ2BBt2dgQbenYEG552BBpCegQbiooEG86KBBvyigQaLo4EGmqSBBuqlgQbGpoEG1KaBBtWmgQbWpoEG_qaBBoCngQaCp4EGhKeBBoangQaIp4EGiqeBBs6ogQbyqIEG9KiBBrysgQbWr4EGwbCBBqSxgQalsYEGh7KBBomygQbWsoEGsbSBBr-5gQbWuYEGosCBBsDAgQbywIEGwcGBBtbCgQaMxYEGj8WBBsrGgQbLxoEG-MeBBqrKgQbYzIEG3MyBBt3NgQaGzoEGoc-BBsTSgQaV1YEG2tiBBuLYgQbL2YEG8tuBBtjkgQaX5YEGuOiBBs_rgQaw7IEG1_WBBrr7gQa7_4EGyf-BBtWDggbIhIIG3oWCBrmGggamh4IGp4eCBrOHggbsh4IG7YeCBuuNggb7jYIGiY6CBo-RggbLkYIGlZiCBraZgga9mYIGj5qCBpmaggbBmoIG95qCBp2eggbVnoIGu6CCBvaiggbipIIGkqWCBvKnggaeqIIGtKiCBoG0ggaDtIIGhrSCBq22ggbCu4IG8b6CBo-_ggbqwIIGvMGCBufJggaRy4IGzcuCBtHLggbczIIG2NCCBvPRggaB2IIGm9iCBqbYggaj2oIGrduCBsXbggax3IIG6t2CBvjdggaJ3oIG5N-CBu_fggbQ4YIG0eGCBuXhggam5oIGlumCBqPtggaF7oIGnu6CBrDuggaF8IIGjfCCBpzwggax8IIGvfGCBuv2ggat-IIGs_iCBvb6ggbe-4IG4_uCBoT8ggav_IIG2_yCBt38ggaB_4IGgICDBtyBgwbygYMGkIWDBp2IgwbQiIMG8IiDBsaLgwaQj4MGuJWDBtqagwaNm4MGhqCDBv2ggwbMoYMGKN2Iua3cKzokMTEwZDQxYjctMTFmOS00ZDdlLWFiNDEtYjc0NzU1Y2M3ZTkzQAFIAA:S:ANO1ljJMsw4lNvhS_Q; NID=109=jHT4Rgn_B8y4YVsFp_B_E5vry75fk8e486DeU4v_3xMN-DTyLOZN3dtSatcdDNFqXRvPjweDBCmUm2nhR8yMu0SnicPLwfzQVVFQE3rZNfKadUrbC3RQTLR8sOwdowHs; _ga=GA1.3.705957279.1502260239; _gid=GA1.3.1898251535.1502260239; S=billing-ui-v3=Pk8JXgmffSZfbT5eNYFCIli-fbYRMzrd:billing-ui-v3-efe=Pk8JXgmffSZfbT5eNYFCIli-fbYRMzrd' -H 'referer: https://play.google.com/store' --compressed
@@ -267,49 +266,59 @@ $proxy="172.16.25.62:8123";
 $proxy = explode(':', $proxy);
 $storeUrl="https://play.google.com/store/apps";
 $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)';
-$ch = curl_init();
-curl_setopt_array($ch, array(
-    CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => $storeUrl,
-    CURLOPT_USERAGENT => $userAgent ,
-    CURLOPT_PROXY => $proxy[0],
-    CURLOPT_PROXYPORT => $proxy[1],
-    CURLOPT_HTTPHEADER => ['Accept-Language: zh']
-));
-$resp = curl_exec($ch);
-$dom = new Dom;
-$dom->loadStr($resp, []);
-$html = $dom->outerHtml;
-$contentSection = null;
-foreach ($dom->find('div[class=action-bar-dropdown-children-container]') as $div) {
-    $contentSection=$div;
-    break; // just first section
+
+$languageCode=array('zh'=>'121');
+foreach (array_keys($languageCode) as $code) {
+    grab($storeUrl,$userAgent,$proxy,$code);
 }
-echo "############\n";
-$dom->loadStr($contentSection, []);
-foreach ($dom->find('div ul li') as $ul) { // will get 3 section,which is finace,game,family 
-    $dom1 = new Dom;
-    $dom1->loadStr($ul, []);
-    foreach($dom1->find('li ul li') as $li) {
-        $dom2 = new Dom;
-        $dom2->loadStr($li, []);
-        foreach ($dom2->find('li a') as $app_detail_link) {
-            $dom3 = new Dom;
-            $dom3->loadStr($app_detail_link, []);
-            $a=$dom2->find('a')[0];
-            //echo ">>>>".$a."\n"; 
-            preg_match_all("/^.*\/store\/apps\/category\/(.*)$/", $a->href, $matches, PREG_SET_ORDER);
-            if (isset($matches[0][1])) {
-                echo htmlspecialchars_decode($a->text);
-                $cat_id=$matches[0][1]; // android cat_id like GAME_SIMULATION 
+
+function grab($storeUrl,$userAgent,$proxy,$code) {
+    echo "processing {$code}...\n";
+    global $CAT;
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => $storeUrl,
+        CURLOPT_USERAGENT => $userAgent ,
+        CURLOPT_PROXY => $proxy[0],
+        CURLOPT_PROXYPORT => $proxy[1],
+        CURLOPT_HTTPHEADER => ["Accept-Language: {$code}"]
+    ));
+    $resp = curl_exec($ch);
+    $dom = new Dom;
+    $dom->loadStr($resp, []);
+    $html = $dom->outerHtml;
+    $contentSection = null;
+    foreach ($dom->find('div[class=action-bar-dropdown-children-container]') as $div) {
+        $contentSection=$div;
+        break; // just first section
+    }
+    echo "############\n";
+    $dom->loadStr($contentSection, []);
+    foreach ($dom->find('div ul li') as $ul) { // will get 3 section,which is finace,game,family 
+        $dom1 = new Dom;
+        $dom1->loadStr($ul, []);
+        foreach($dom1->find('li ul li') as $li) {
+            $dom2 = new Dom;
+            $dom2->loadStr($li, []);
+            foreach ($dom2->find('li a') as $app_detail_link) {
+                $dom3 = new Dom;
+                $dom3->loadStr($app_detail_link, []);
+                $a=$dom2->find('a')[0];
+                preg_match_all("/^.*\/store\/apps\/category\/(.*)$/", $a->href, $matches, PREG_SET_ORDER);
+                if (isset($matches[0][1])) {
+                    echo htmlspecialchars_decode($a->text)."\n";
+                    $cat_id=$matches[0][1]; // android cat_id like GAME_SIMULATION 
+                    $CAT[$code][$cat_id]['name']=htmlspecialchars_decode($a->text);
+                }
             }
         }
-    }
-    echo "---------\n"; // next section 
-} 
+        echo "---------\n"; // next section 
+    } 
+}
 
-//file_put_contents('/tmp/res1', $resp);
-
+print_r($CAT);
+file_put_contents("/tmp/res1.ser", serialize($CAT));
 
 
 
