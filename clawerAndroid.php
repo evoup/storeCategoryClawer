@@ -257,6 +257,26 @@ $languageCode = array(
 print_r($languageCode);
 
 
+//curl 'https://play.google.com/store/apps' -H 'accept-encoding: gzip, deflate, br' -H 'accept-language: zh-CN,zh;q=0.8' -H 'upgrade-insecure-requests: 1' -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36' -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'cache-control: max-age=0' -H 'authority: play.google.com' -H 'cookie: PLAY_PREFS=CvMGCAAS7gYKAlVTEIaIua3cKxqvBhESExQV1AHVAacCxATjBeUF6AXXBtgG3gbfBpCVgQaRlYEGkpWBBpeVgQa3lYEGuJWBBsCVgQbBlYEGxJWBBtSVgQbZlYEG8pWBBviVgQabloEGnZaBBp6WgQafloEGoJaBBu6XgQaCmIEGhZiBBomYgQaKmIEGi5iBBr6YgQarm4EGrZuBBsmbgQbKm4EGy5uBBtWbgQbwm4EGvJ2BBt2dgQbenYEG552BBpCegQbiooEG86KBBvyigQaLo4EGmqSBBuqlgQbGpoEG1KaBBtWmgQbWpoEG_qaBBoCngQaCp4EGhKeBBoangQaIp4EGiqeBBs6ogQbyqIEG9KiBBrysgQbWr4EGwbCBBqSxgQalsYEGh7KBBomygQbWsoEGsbSBBr-5gQbWuYEGosCBBsDAgQbywIEGwcGBBtbCgQaMxYEGj8WBBsrGgQbLxoEG-MeBBqrKgQbYzIEG3MyBBt3NgQaGzoEGoc-BBsTSgQaV1YEG2tiBBuLYgQbL2YEG8tuBBtjkgQaX5YEGuOiBBs_rgQaw7IEG1_WBBrr7gQa7_4EGyf-BBtWDggbIhIIG3oWCBrmGggamh4IGp4eCBrOHggbsh4IG7YeCBuuNggb7jYIGiY6CBo-RggbLkYIGlZiCBraZgga9mYIGj5qCBpmaggbBmoIG95qCBp2eggbVnoIGu6CCBvaiggbipIIGkqWCBvKnggaeqIIGtKiCBoG0ggaDtIIGhrSCBq22ggbCu4IG8b6CBo-_ggbqwIIGvMGCBufJggaRy4IGzcuCBtHLggbczIIG2NCCBvPRggaB2IIGm9iCBqbYggaj2oIGrduCBsXbggax3IIG6t2CBvjdggaJ3oIG5N-CBu_fggbQ4YIG0eGCBuXhggam5oIGlumCBqPtggaF7oIGnu6CBrDuggaF8IIGjfCCBpzwggax8IIGvfGCBuv2ggat-IIGs_iCBvb6ggbe-4IG4_uCBoT8ggav_IIG2_yCBt38ggaB_4IGgICDBtyBgwbygYMGkIWDBp2IgwbQiIMG8IiDBsaLgwaQj4MGuJWDBtqagwaNm4MGhqCDBv2ggwbMoYMGKN2Iua3cKzokMTEwZDQxYjctMTFmOS00ZDdlLWFiNDEtYjc0NzU1Y2M3ZTkzQAFIAA:S:ANO1ljJMsw4lNvhS_Q; NID=109=jHT4Rgn_B8y4YVsFp_B_E5vry75fk8e486DeU4v_3xMN-DTyLOZN3dtSatcdDNFqXRvPjweDBCmUm2nhR8yMu0SnicPLwfzQVVFQE3rZNfKadUrbC3RQTLR8sOwdowHs; _ga=GA1.3.705957279.1502260239; _gid=GA1.3.1898251535.1502260239; S=billing-ui-v3=Pk8JXgmffSZfbT5eNYFCIli-fbYRMzrd:billing-ui-v3-efe=Pk8JXgmffSZfbT5eNYFCIli-fbYRMzrd' -H 'referer: https://play.google.com/store' --compressed
+
+
+$proxy="172.16.25.62:8123";
+$proxy = explode(':', $proxy);
+$storeUrl="https://play.google.com/store/apps";
+$userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)';
+$ch = curl_init();
+curl_setopt_array($ch, array(
+    CURLOPT_RETURNTRANSFER => 1,
+    CURLOPT_URL => $storeUrl,
+    CURLOPT_USERAGENT => $userAgent ,
+    CURLOPT_PROXY => $proxy[0],
+    CURLOPT_PROXYPORT => $proxy[1]
+));
+$resp = curl_exec($ch);
+print_r($resp);
+
+
+
 
 ?>
 
