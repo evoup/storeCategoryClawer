@@ -49,7 +49,7 @@ foreach($CAT as $country => $countryInfo) {
             @$insertCountry[$cnt]=$CAT[$cnt][$catId]['name'];
         }
         if (!empty($insertCountry[$country])) {
-            @mysqli_query($link, "insert into adsapi.ios_app_category(ios_app_category_id, parent_id, ios_app_category_name, locale_names) values('{$catId}','".$info['parent_id']."','".$info['name']."','".json_encode($insertCountry, JSON_UNESCAPED_UNICODE)."')");
+            @mysqli_query($link, "insert into adsapi.ios_app_category(ios_app_category_id, parent_id, ios_app_category_name, locale_names) values('{$catId}','".$info['parent_id']."','".$info['name']."','".addslashes(json_encode($insertCountry, JSON_UNESCAPED_UNICODE))."')");
         }
     }
 }
